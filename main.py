@@ -2,15 +2,16 @@ import requests
 import smtplib 
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from email.message import EmailMessage
 import os
 
-load_dotenv()
+load_dotenv() # Load environment variables
 
+# Constants data from .env file
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-print(f"Email: {EMAIL}")
-
+# Function to get the price of the product
 def get_price():
     url = "https://appbrewery.github.io/instant_pot/"
     response = requests.get(url)
@@ -23,11 +24,27 @@ def get_price():
     
     return precio_total
 
+#Create the email message
+def create_email():
+    msg = EmailMessage()
+    msg['Subject'] = '!!ALERT!! It´s time to buy'
+    msg['From'] = EMAIL
+    msg['To'] = 'ronmed1989@yahoo.com'
+    msg.set_content('Time to buy, the product is under 100 you should buy it now')
+    return msg
+
+
+#Function to send the email
 def send_email():
     COST = get_price()
-    #MY_EMAIL = 
-    #MY_PASSWORD = 
+    MSG = create_email()
+    
+    if COST < 100:
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(EMAIL, PASSWORD)
+            server.send_message(MSG)
 
-    #if COST < 100:
-        #with smtplib**
+send_email()
+
 
