@@ -35,9 +35,8 @@ def get_price():
     precio_total = float(precio) + float(centimos) / 100
     
 
-    print(website_soup.prettify())
-    #return precio_total, title
-get_price()
+    return precio_total, title
+
 #Create the email message
 def create_email():
     PRODUCT = get_price()[1]
@@ -59,4 +58,4 @@ def send_email():
             server.login(EMAIL, PASSWORD)
             server.send_message(MSG)
 
-#send_email()
+send_email()
